@@ -1,12 +1,15 @@
-interface Message {
-    content: string;
-    author: string;
-}
+import server from "./server";
 
-const message: Message = {
-    content: "Hello World",
-    author: "Me",
-};
+process.on("SIGINT", () => {
+    console.log("Closing server...");
 
-console.log(message.content);
-console.log("     -- " + message.author);
+    server.close((err) => {
+        if (err) {
+            console.error(err);
+            process.exitCode = 1;
+        } else {
+            console.log("Server closed");
+            process.exitCode = 0;
+        }
+    });
+});
