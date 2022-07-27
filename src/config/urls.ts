@@ -3,6 +3,16 @@
  */
 export const urls = {
     v1: {
+        state: {
+            /**
+             * @description - Endpoint to retrieve a state by its `stateCode`.
+             */
+            get: "/v1/state/:stateCode",
+            /**
+             * @description - Endpoint to retrieve all states.
+             */
+            find: "/v1/state",
+        },
         status: {
             /**
              * @description - The health check endpoint.

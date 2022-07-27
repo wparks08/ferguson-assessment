@@ -1,7 +1,19 @@
 import { MongoClient } from "mongodb";
+import { DB_NAME, DB_URI } from "./config";
+import { runSeed } from "./seed";
 
-const uri = "mongodb://localhost:27017";
+const dbClient = new MongoClient(DB_URI);
 
-const client = new MongoClient(uri);
+/**
+ * On connection to the database, run the seed operation.
+ */
+dbClient.on("open", async () => {
+    console.log("Connected to database.");
+    await runSeed();
+});
 
-export default client.db("ferguson-assessment");
+const database = dbClient.db(DB_NAME);
+
+export default database;
+
+export { dbClient };

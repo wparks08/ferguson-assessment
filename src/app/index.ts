@@ -1,12 +1,14 @@
 import express from "express";
-import { statusRoutes } from "../components/status/statusRoutes";
-import { studentRoutes } from "../components/student/studentRoutes";
+import status from "../components/status";
+import student from "../components/student";
+import state from "../components/state";
 
 const app = express();
 
 app.use(express.json());
 
-statusRoutes(app);
-studentRoutes(app);
+state.routes(app);
+status.routes(app);
+student.routes(app);
 
 export default app;

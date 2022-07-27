@@ -9,9 +9,24 @@ export default {
         console.log("inserting student...");
         return await collection.insertOne(student);
     },
-    find: async () => {
+    find: async ({
+        limit = 0,
+        offset = 0,
+        sortBy,
+        order = "asc",
+    }: {
+        limit?: number;
+        offset?: number;
+        sortBy?: keyof Student;
+        order?: "asc" | "desc";
+    }) => {
         console.log("finding students...");
-        return await collection.find().toArray();
+        return await collection
+            .find()
+            .limit(limit)
+            .skip(offset)
+            .sort(sortBy as string, order)
+            .toArray();
     },
     get: async (id: string) => {
         console.log("getting student...");

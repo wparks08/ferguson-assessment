@@ -1,10 +1,20 @@
 import app from "../app";
+import * as http from "http";
+import { dbClient } from "../db";
+import net from "net";
 
-const defaultPort = 3001;
-const PORT = process.env.PORT || defaultPort;
+/**
+ * Create a server by passing the express app to the http module
+ */
+const server = http.createServer(app);
 
-const server = app.listen(PORT, () => {
-    console.log(`Server listening on port ${PORT}`);
+/**
+ * Connect to the database when the server is started
+ */
+server.on("listening", async () => {
+    const { port } = server.address() as net.AddressInfo;
+    console.log(`Server listening on port ${port}`);
+    await dbClient.connect();
 });
 
 export default server;
