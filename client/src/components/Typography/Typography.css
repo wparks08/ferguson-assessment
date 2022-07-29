@@ -1,0 +1,94 @@
+.typography {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #333;
+}
+
+.h1 {
+    font-size: 36px;
+    font-weight: 300;
+    line-height: 1.25;
+    color: #333;
+}
+
+.h2 {
+    font-size: 30px;
+    font-weight: 300;
+    line-height: 1.25;
+    color: #333;
+}
+
+.h3 {
+    font-size: 24px;
+    font-weight: 300;
+    line-height: 1.25;
+    color: #333;
+}
+
+.h4 {
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.25;
+    color: #333;
+}
+
+.h5 {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.25;
+    color: #333;
+}
+
+.h6 {
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 1.25;
+    color: #333;
+}
+
+.p {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #333;
+}
+
+.span {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #333;
+}
+
+.primary {
+    color: #00bcd4;
+}
+
+.secondary {
+    color: #ff9800;
+}
+
+.success {
+    color: #4caf50;
+}
+
+.danger {
+    color: #f44336;
+}
+
+.warning {
+    color: #ff9800;
+}
+
+.info {
+    color: #2196f3;
+}
+
+.light {
+    color: #f5f5f5;
+}
+
+.dark {
+    color: #212121;
+}

@@ -1,0 +1,31 @@
+.button {
+    background-color: #386190;
+    border: 1px solid #243f5d;
+    color: #e1e9f3;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 500;
+    margin: 4px 2px;
+    cursor: pointer;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    border-radius: 4px;
+}
+
+.button-primary {
+    background-color: #386190;
+    color: white;
+}
+
+.button-secondary {
+    background-color: white;
+    color: #386190;
+}
+
+.button:hover {
+    background-color: #243f5d;
+    color: white;
+}
