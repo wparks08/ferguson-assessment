@@ -7,11 +7,11 @@ export const urls = {
             /**
              * @description - Endpoint to retrieve a state by its `stateCode`.
              */
-            get: "/v1/state/:stateCode",
+            get: "/v1/states/:stateCode",
             /**
              * @description - Endpoint to retrieve all states.
              */
-            find: "/v1/state",
+            find: "/v1/states",
         },
         status: {
             /**
@@ -27,23 +27,23 @@ export const urls = {
             /**
              * @description - Endpoint to create a new student record.
              */
-            create: "/v1/student",
+            create: "/v1/students",
             /**
              * @description - Endpoint to get a student record by id.
              */
-            get: "/v1/student/:id",
+            get: "/v1/students/:id",
             /**
              * @description - Endpoint to get all student records.
              */
-            find: "/v1/student",
+            find: "/v1/students",
             /**
              * @description - Endpoint to update a student record by id.
              */
-            update: "/v1/student/:id",
+            update: "/v1/students/:id",
             /**
              * @description - Endpoint to delete a student record by id.
              */
-            delete: "/v1/student/:id",
+            delete: "/v1/students/:id",
         },
     },
 };
