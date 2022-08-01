@@ -2,8 +2,9 @@ import React from "react";
 import "./Button.css";
 
 interface ButtonProps {
-    children: React.ReactNode;
+    children?: React.ReactNode;
     variant?: "primary" | "secondary";
+    onClick?: () => void;
 }
 
 /**
@@ -14,10 +15,20 @@ interface ButtonProps {
  * @param props.variant - Type of button.
  * @constructor
  */
-const Button = ({ children, variant }: ButtonProps) => {
+const Button = ({ children, variant, onClick }: ButtonProps) => {
     const className = `button ${variant ? `button-${variant}` : ""}`;
 
-    return <button className={className}>{children}</button>;
+    const handleClick = () => {
+        if (onClick) {
+            onClick();
+        }
+    };
+
+    return (
+        <button className={className} onClick={handleClick}>
+            {children}
+        </button>
+    );
 };
 
 export default Button;

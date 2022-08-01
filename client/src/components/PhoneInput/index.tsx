@@ -1,10 +1,12 @@
 import React from "react";
+import Input from "../Input";
 
 interface PhoneInputProps {
     name: string;
     value: string;
     label: string;
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    disabled?: boolean;
 }
 
 /**
@@ -21,14 +23,15 @@ interface PhoneInputProps {
  * @returns {React.ReactElement}
  * @constructor
  */
-const PhoneInput = ({ name, value, label, onChange }: PhoneInputProps) => {
+const PhoneInput = ({ name, value, label, onChange, disabled }: PhoneInputProps) => {
+    const placeholder = "(###) ###-####";
+
     /**
      * Mask the input field to the format `(###) ###-####`.
      */
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
-        const formattedPhoneNumber = formatPhoneNumber(value);
-        event.target.value = formattedPhoneNumber;
+        event.target.value = formatPhoneNumber(value);
         onChange(event);
     };
 
@@ -36,7 +39,7 @@ const PhoneInput = ({ name, value, label, onChange }: PhoneInputProps) => {
      * Remove non-numeric characters from the phone number.
      */
     const scrubPhoneNumber = (phoneNumber: string) => {
-        return phoneNumber.replace(/[^\d]/g, "");
+        return phoneNumber.replace(/\D/g, "");
     };
 
     /**
@@ -46,9 +49,9 @@ const PhoneInput = ({ name, value, label, onChange }: PhoneInputProps) => {
         const phoneNumber = scrubPhoneNumber(phoneNum);
         if (phoneNumber.length === 0) {
             return "";
-        } else if (phoneNumber.length < 3) {
+        } else if (phoneNumber.length < 4) {
             return `(${phoneNumber}`;
-        } else if (phoneNumber.length < 6) {
+        } else if (phoneNumber.length < 7) {
             return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
         } else if (phoneNumber.length < 10) {
             return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6)}`;
@@ -63,23 +66,23 @@ const PhoneInput = ({ name, value, label, onChange }: PhoneInputProps) => {
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Backspace") {
             event.preventDefault();
-            const { value } = event.currentTarget;
-            event.currentTarget.value = formatPhoneNumber(value.slice(0, -1));
+            const { value } = event.target;
+            event.target.value = formatPhoneNumber(value.slice(0, -1));
+            handleChange(event);
         }
     };
 
     return (
-        <div>
-            <label>{label}</label>
-            <input
-                type="tel"
-                placeholder="(###) ###-####"
-                name={name}
-                value={value}
-                onChange={handleChange}
-                onKeyDown={handleKeyDown}
-            />
-        </div>
+        <Input
+            name={name}
+            value={value}
+            label={label}
+            type="tel"
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+            placeholder={placeholder}
+            disabled={disabled}
+        />
     );
 };
 

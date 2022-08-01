@@ -1,18 +1,19 @@
-import { useStudentFormState } from "./use-student-form-state";
-import React, { useState } from "react";
+import { useState } from "react";
 import { urls } from "../config/urls";
+import { Student } from "../../../src/interfaces/student";
+
+interface UseCreateStudentParams {
+    onSuccess: () => unknown;
+}
 
 /**
  * Hook to handle creating a student
  */
-export const useCreateStudent = () => {
-    const { student, handleChange, handleStateChange } = useStudentFormState();
-
+export const useCreateStudent = ({ onSuccess }: UseCreateStudentParams) => {
     const [status, setStatus] = useState<string>("");
     const [error, setError] = useState<string>("");
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+    const submitStudent = async (student: Student) => {
         setStatus("");
         setError("");
         console.log(student);
@@ -26,6 +27,7 @@ export const useCreateStudent = () => {
             });
             if (response.ok) {
                 setStatus("Student created successfully.");
+                onSuccess();
             } else {
                 setError("Error creating student.");
             }
@@ -34,5 +36,10 @@ export const useCreateStudent = () => {
         }
     };
 
-    return { student, handleChange, handleStateChange, handleSubmit, status, error };
+    const clearStatus = () => {
+        setStatus("");
+        setError("");
+    };
+
+    return { submitStudent, status, error, clearStatus };
 };

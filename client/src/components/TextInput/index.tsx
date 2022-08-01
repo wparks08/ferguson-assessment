@@ -1,11 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
+import Input from "../Input";
 
 interface TextInputProps {
     name: string;
     value: string;
     label: string;
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    disabled?: boolean;
 }
 
 /**
@@ -19,13 +21,8 @@ interface TextInputProps {
  * @returns {React.ReactElement}
  * @constructor
  */
-const TextInput = ({ name, value, label, onChange }: TextInputProps) => {
-    return (
-        <div>
-            <label>{label}</label>
-            <input type="text" name={name} value={value} onChange={onChange} />
-        </div>
-    );
+const TextInput = ({ name, value, label, onChange, disabled }: TextInputProps) => {
+    return <Input name={name} value={value} label={label} type="text" onChange={onChange} disabled={disabled} />;
 };
 
 TextInput.propTypes = {

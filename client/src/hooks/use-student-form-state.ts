@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { Student } from "../../../src/interfaces/student";
 
 interface UseStudentFormStateParams {
     student?: Student;
+}
+
+interface UpdateStudentFieldParams {
+    name: string;
+    value: string;
 }
 
 /**
@@ -23,15 +28,31 @@ export const useStudentFormState = (params?: UseStudentFormStateParams) => {
         }
     );
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = event.target;
+    useEffect(() => {
+        setStudent(
+            params?.student || {
+                firstName: "",
+                lastName: "",
+                phoneNumber: "",
+                stateOfResidenceCode: "",
+                zip: "",
+            }
+        );
+    }, [params?.student]);
+
+    const updateStudentField = ({ name, value }: UpdateStudentFieldParams) => {
         setStudent({ ...student, [name]: value });
     };
 
-    const handleStateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const { value } = event.target;
-        setStudent({ ...student, stateOfResidenceCode: value });
+    const clearStudent = () => {
+        setStudent({
+            firstName: "",
+            lastName: "",
+            phoneNumber: "",
+            stateOfResidenceCode: "",
+            zip: "",
+        });
     };
 
-    return { student, handleChange, handleStateChange };
+    return { student, updateStudentField, clearStudent };
 };

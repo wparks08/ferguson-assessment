@@ -6,6 +6,7 @@ import { Typography } from "../Typography";
 
 interface StudentListItemProps {
     student: IdStudent;
+    onViewStudent: (student: IdStudent) => void;
 }
 
 /**
@@ -14,15 +15,15 @@ interface StudentListItemProps {
  * @param {Object} props - React props.
  * @param props.student - Student data.
  */
-const StudentListItem = ({ student }: StudentListItemProps) => {
+const StudentListItem = ({ student, onViewStudent }: StudentListItemProps) => {
     return (
         <li>
-            <Typography>{student.firstName}</Typography>
-            <Typography>{student.lastName}</Typography>
-            <Typography>{student.phoneNumber}</Typography>
-            <Typography>{student.stateOfResidenceCode}</Typography>
-            <Typography>{student.zip}</Typography>
-            <Button>Edit</Button>
+            <Typography variant="p">
+                {student.firstName} {student.lastName}
+            </Typography>
+            <Button variant="secondary" onClick={() => onViewStudent(student)}>
+                View
+            </Button>
         </li>
     );
 };

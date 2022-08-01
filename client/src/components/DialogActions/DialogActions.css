@@ -1,0 +1,7 @@
+.dialog-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0.5rem;
+}

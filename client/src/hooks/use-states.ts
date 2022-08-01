@@ -8,12 +8,18 @@ import { urls } from "../config/urls";
  */
 export const useStates = () => {
     const [states, setStates] = useState<State[]>([]);
+    const [isInitialized, setIsInitialized] = useState<boolean>(false);
 
     useEffect(() => {
-        fetch(urls.v1.states.find)
-            .then((response) => response.json())
-            .then((data) => setStates(data));
-    }, []);
+        if (!isInitialized) {
+            fetch(urls.v1.states.find)
+                .then((response) => response.json())
+                .then((data) => {
+                    setStates(data);
+                    setIsInitialized(true);
+                });
+        }
+    }, [isInitialized]);
 
     return states;
 };
