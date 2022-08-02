@@ -20,7 +20,6 @@
   "author": "Will Parks",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "if-env": "^1.0.4",
     "mongodb": "^4.8.0",

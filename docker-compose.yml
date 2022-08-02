@@ -1,0 +1,20 @@
+version: "3"
+services:
+  ferguson-assessment:
+    container_name: ferguson-assessment
+    image: wparks08/ferguson-assessment
+    restart: always
+    build: .
+    ports:
+      - "3000:3000"
+    links:
+      - ferguson-db
+    environment:
+      - DB_URI=mongodb://ferguson-db:27017/ferguson-assessment
+  ferguson-db:
+    container_name: ferguson-db
+    image: mongo
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"
