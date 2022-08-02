@@ -1,6 +1,7 @@
 import { State } from "../../interfaces/state";
 import db from "../../db";
 import { ObjectId } from "mongodb";
+import { verifyAllStates, getAllStates, setAllStates } from "../../cache";
 
 const collection = db.collection<State>("states");
 
@@ -11,6 +12,14 @@ export default {
     },
     find: async () => {
         console.log("finding states...");
-        return await collection.find().toArray();
+        if (await verifyAllStates()) {
+            console.log("states found in cache");
+            return await getAllStates();
+        } else {
+            console.log("states not found in cache");
+            const states = await collection.find().toArray();
+            await setAllStates(states);
+            return states;
+        }
     },
 };

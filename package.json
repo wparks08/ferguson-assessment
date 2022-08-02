@@ -12,7 +12,7 @@
     "install": "cd client && npm install",
     "build": "npm run clean && tsc -b && cd client && npm run build",
     "clean": "tsc -b --clean",
-    "test": "jest",
+    "test": "cd client && npm run test",
     "release": "standard-version",
     "release:dry": "standard-version --dry-run"
   },
@@ -24,6 +24,7 @@
     "express": "^4.18.1",
     "if-env": "^1.0.4",
     "mongodb": "^4.8.0",
+    "node-cache": "^5.1.2",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

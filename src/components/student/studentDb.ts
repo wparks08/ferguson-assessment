@@ -1,12 +1,14 @@
 import { Student } from "../../interfaces/student";
 import db from "../../db";
 import { ObjectId } from "mongodb";
+import { verifyAllStudents, getAllStudents, setAllStudents, invalidateStudentCache } from "../../cache";
 
 const collection = db.collection<Student>("students");
 
 export default {
     create: async (student: Student) => {
         console.log("inserting student...");
+        await invalidateStudentCache();
         return await collection.insertOne(student);
     },
     find: async ({
@@ -21,12 +23,38 @@ export default {
         order?: "asc" | "desc";
     }) => {
         console.log("finding students...");
-        return await collection
-            .find()
-            .limit(limit)
-            .skip(offset)
-            .sort(sortBy as string, order)
-            .toArray();
+        if (await verifyAllStudents()) {
+            console.log("students found in cache");
+            const students = await getAllStudents();
+
+            // Sort cache results
+            if (sortBy) {
+                students?.sort((a, b) => {
+                    if (order === "asc") {
+                        return a[sortBy] > b[sortBy] ? 1 : -1;
+                    } else {
+                        return a[sortBy] < b[sortBy] ? 1 : -1;
+                    }
+                });
+            }
+
+            // Pagination on cache results, if necessary
+            if (limit) {
+                return students?.slice(offset, offset + limit);
+            } else {
+                return students;
+            }
+        } else {
+            console.log("students not found in cache");
+            const students = await collection
+                .find()
+                .skip(offset)
+                .limit(limit)
+                .sort({ [sortBy as string]: order })
+                .toArray();
+            await setAllStudents(students);
+            return students;
+        }
     },
     get: async (id: string) => {
         console.log("getting student...");
@@ -34,10 +62,12 @@ export default {
     },
     update: async (id: string, student: Student) => {
         console.log("updating student...");
+        await invalidateStudentCache();
         return await collection.updateOne({ _id: new ObjectId(id) }, { $set: student });
     },
     delete: async (id: string) => {
         console.log("deleting student...");
+        await invalidateStudentCache();
         return await collection.deleteOne({ _id: new ObjectId(id) });
     },
 };
