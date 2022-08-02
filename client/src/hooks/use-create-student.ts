@@ -29,7 +29,8 @@ export const useCreateStudent = ({ onSuccess }: UseCreateStudentParams) => {
                 setStatus("Student created successfully.");
                 onSuccess();
             } else {
-                setError("Error creating student.");
+                const error = (await response.json()).error;
+                setError("Error creating student -- " + error);
             }
         } catch (error) {
             setError((error as Error).message);

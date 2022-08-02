@@ -2,6 +2,7 @@ import { Student } from "../../interfaces/student";
 import db from "../../db";
 import { ObjectId } from "mongodb";
 import { verifyAllStudents, getAllStudents, setAllStudents, invalidateStudentCache } from "../../cache";
+import { StudentCollection } from "../../classes/StudentCollection";
 
 const collection = db.collection<Student>("students");
 
@@ -25,25 +26,19 @@ export default {
         console.log("finding students...");
         if (await verifyAllStudents()) {
             console.log("students found in cache");
-            const students = await getAllStudents();
+            const cachedStudents = await getAllStudents();
 
-            // Sort cache results
+            if (!cachedStudents) {
+                throw new Error("students not found in cache after verification succeeded");
+            }
+
+            const students = new StudentCollection(cachedStudents).skip(offset).limit(limit);
+
             if (sortBy) {
-                students?.sort((a, b) => {
-                    if (order === "asc") {
-                        return a[sortBy] > b[sortBy] ? 1 : -1;
-                    } else {
-                        return a[sortBy] < b[sortBy] ? 1 : -1;
-                    }
-                });
+                students.sort({ sortBy, order });
             }
 
-            // Pagination on cache results, if necessary
-            if (limit) {
-                return students?.slice(offset, offset + limit);
-            } else {
-                return students;
-            }
+            return students.toArray();
         } else {
             console.log("students not found in cache");
             const students = await collection

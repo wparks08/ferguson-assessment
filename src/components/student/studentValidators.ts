@@ -32,6 +32,6 @@ export const validateCreateStudentBody = async (req: Request, res: Response, nex
         next();
     } catch (err) {
         console.error(err);
-        res.status(400).send({ error: "Invalid student." });
+        res.status(400).send({ error: "Invalid student: " + (err as Error).message });
     }
 };
