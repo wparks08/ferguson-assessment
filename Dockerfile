@@ -6,13 +6,10 @@ RUN mkdir -p /app/client
 
 # Install app dependencies
 COPY package*.json .
-COPY /client/package*.json /app/client
+COPY /client/package*.json ./client
 RUN npm install
 
-# Build app
-RUN npm run build
-
-# Bundle app source
+# Bundle source
 COPY . .
 
 # Set PORT to 3000
