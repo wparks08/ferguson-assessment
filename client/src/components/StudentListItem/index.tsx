@@ -17,7 +17,7 @@ interface StudentListItemProps {
  */
 const StudentListItem = ({ student, onViewStudent }: StudentListItemProps) => {
     return (
-        <li>
+        <li data-testid={process.env.NODE_ENV === "test" ? "student-list-item" : undefined}>
             <Typography variant="p">
                 {student.firstName} {student.lastName}
             </Typography>

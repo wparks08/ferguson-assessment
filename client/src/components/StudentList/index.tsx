@@ -17,7 +17,11 @@ const StudentList = ({ children }: StudentListParams) => {
     if (Children.count(children) === 0) {
         return <em>No students found.</em>;
     }
-    return <ul className="student-list">{children}</ul>;
+    return (
+        <ul className="student-list" data-testid={process.env.NODE_ENV === "test" ? "student-list" : undefined}>
+            {children}
+        </ul>
+    );
 };
 
 StudentList.propTypes = {

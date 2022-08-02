@@ -2,10 +2,10 @@ import React from "react";
 import Input from "../Input";
 
 interface PhoneInputProps {
-    name: string;
-    value: string;
-    label: string;
-    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    name?: string;
+    value?: string;
+    label?: string;
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     disabled?: boolean;
 }
 
@@ -32,7 +32,9 @@ const PhoneInput = ({ name, value, label, onChange, disabled }: PhoneInputProps)
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
         event.target.value = formatPhoneNumber(value);
-        onChange(event);
+        if (onChange) {
+            onChange(event);
+        }
     };
 
     /**

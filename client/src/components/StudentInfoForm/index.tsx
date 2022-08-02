@@ -27,33 +27,31 @@ const StudentInfoForm = ({ student, updateFn, editing = false }: StudentInfoForm
     };
 
     return (
-        <div>
-            <form>
-                <TextInput
-                    name="firstName"
-                    value={student.firstName}
-                    label="First Name"
-                    onChange={handleChange}
-                    disabled={!editing}
-                />
-                <TextInput
-                    name="lastName"
-                    value={student.lastName}
-                    label="Last Name"
-                    onChange={handleChange}
-                    disabled={!editing}
-                />
-                <PhoneInput
-                    name="phoneNumber"
-                    value={student.phoneNumber}
-                    label="Phone Number"
-                    onChange={handleChange}
-                    disabled={!editing}
-                />
-                <StateDropdown value={student.stateOfResidenceCode} onChange={handleChange} disabled={!editing} />
-                <TextInput name="zip" value={student.zip} label="Zip" onChange={handleChange} disabled={!editing} />
-            </form>
-        </div>
+        <form data-testid={process.env.NODE_ENV === "test" ? "student-info-form" : undefined}>
+            <TextInput
+                name="firstName"
+                value={student.firstName}
+                label="First Name"
+                onChange={handleChange}
+                disabled={!editing}
+            />
+            <TextInput
+                name="lastName"
+                value={student.lastName}
+                label="Last Name"
+                onChange={handleChange}
+                disabled={!editing}
+            />
+            <PhoneInput
+                name="phoneNumber"
+                value={student.phoneNumber}
+                label="Phone Number"
+                onChange={handleChange}
+                disabled={!editing}
+            />
+            <StateDropdown value={student.stateOfResidenceCode} onChange={handleChange} disabled={!editing} />
+            <TextInput name="zip" value={student.zip} label="Zip" onChange={handleChange} disabled={!editing} />
+        </form>
     );
 };
 

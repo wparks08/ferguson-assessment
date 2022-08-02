@@ -5,11 +5,15 @@ import "./DialogActions.css";
  */
 
 interface DialogActionsProps {
-    children: React.ReactNode;
+    children?: React.ReactNode;
 }
 
 const DialogActions = ({ children }: DialogActionsProps) => {
-    return <div className="dialog-actions">{children}</div>;
+    return (
+        <div className="dialog-actions" data-testid={process.env.NODE_ENV === "test" ? "dialog-actions" : undefined}>
+            {children}
+        </div>
+    );
 };
 
 export default DialogActions;

@@ -17,7 +17,7 @@ interface DialogProps {
  */
 const Dialog = ({ children, isOpen, onClose }: DialogProps) => {
     return (
-        <div className={`${isOpen ? "dialog" : "hidden"}`}>
+        <div className={`${isOpen ? "dialog" : "hidden"}`} role="dialog">
             <div className="dialog-overlay" onClick={onClose} />
             <div className="dialog-content">{children}</div>
         </div>

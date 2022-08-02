@@ -3,12 +3,12 @@ import PropTypes from "prop-types";
 import "./Input.css";
 
 interface InputProps {
-    name: string;
-    value: string;
-    label: string;
-    type: string;
+    name?: string;
+    value?: string;
+    label?: string;
+    type?: string;
     placeholder?: string;
-    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
     disabled?: boolean;
 }
@@ -29,10 +29,14 @@ interface InputProps {
 const Input = ({ name, value, label, type, placeholder, onChange, onKeyDown, disabled }: InputProps) => {
     return (
         <div className="input-wrapper">
-            <label className="input-label">{label}</label>
+            <label htmlFor={name} className="input-label">
+                {label}
+            </label>
             <input
                 type={type}
                 name={name}
+                id={name}
+                aria-label={label}
                 value={value}
                 onChange={onChange}
                 placeholder={placeholder}
@@ -45,12 +49,12 @@ const Input = ({ name, value, label, type, placeholder, onChange, onKeyDown, dis
 };
 
 Input.propTypes = {
-    name: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
+    name: PropTypes.string,
+    value: PropTypes.string,
+    label: PropTypes.string,
+    type: PropTypes.string,
     placeholder: PropTypes.string,
-    onChange: PropTypes.func.isRequired,
+    onChange: PropTypes.func,
     onKeyDown: PropTypes.func,
 };
 

@@ -19,8 +19,17 @@ const StateDropdown = ({ value, onChange, disabled }: StateDropdownProps) => {
 
     return (
         <div className="input-wrapper">
-            <label className="input-label">State of Residence</label>
-            <select name="stateOfResidenceCode" onChange={onChange} className="input" value={value} disabled={disabled}>
+            <label htmlFor="stateOfResidenceCode" className="input-label">
+                State of Residence
+            </label>
+            <select
+                name="stateOfResidenceCode"
+                id="stateOfResidenceCode"
+                onChange={onChange}
+                className="input"
+                value={value}
+                disabled={disabled}
+            >
                 <option value="">Select a state</option>
                 {states.map((state) => (
                     <option key={state.stateCode} value={state.stateCode}>

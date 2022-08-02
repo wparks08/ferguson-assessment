@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import Input from "../Input";
 
 interface TextInputProps {
-    name: string;
-    value: string;
-    label: string;
-    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    name?: string;
+    value?: string;
+    label?: string;
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     disabled?: boolean;
 }
 
@@ -26,10 +26,10 @@ const TextInput = ({ name, value, label, onChange, disabled }: TextInputProps) =
 };
 
 TextInput.propTypes = {
-    name: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
+    name: PropTypes.string,
+    value: PropTypes.string,
+    label: PropTypes.string,
+    onChange: PropTypes.func,
 };
 
 export default TextInput;
