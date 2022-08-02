@@ -3,12 +3,13 @@ import db from "../../db";
 import { ObjectId } from "mongodb";
 import { verifyAllStudents, getAllStudents, setAllStudents, invalidateStudentCache } from "../../cache";
 import { StudentCollection } from "../../classes/StudentCollection";
+import log from "../../log";
 
 const collection = db.collection<Student>("students");
 
 export default {
     create: async (student: Student) => {
-        console.log("inserting student...");
+        log.info(`[StudentDb] Creating student: ${JSON.stringify(student)}`);
         await invalidateStudentCache();
         return await collection.insertOne(student);
     },
@@ -23,9 +24,9 @@ export default {
         sortBy?: keyof Student;
         order?: "asc" | "desc";
     }) => {
-        console.log("finding students...");
+        log.info("[StudentDb] Getting all students");
         if (await verifyAllStudents()) {
-            console.log("students found in cache");
+            log.info("[StudentDb] Found students in cache");
             const cachedStudents = await getAllStudents();
 
             if (!cachedStudents) {
@@ -40,7 +41,7 @@ export default {
 
             return students.toArray();
         } else {
-            console.log("students not found in cache");
+            log.info("[StudentDb] Students not found in cache, retrieving from database");
             const students = await collection
                 .find()
                 .skip(offset)
@@ -52,16 +53,16 @@ export default {
         }
     },
     get: async (id: string) => {
-        console.log("getting student...");
+        log.info(`[StudentDb] Getting student with id: ${id}`);
         return await collection.findOne({ _id: new ObjectId(id) });
     },
     update: async (id: string, student: Student) => {
-        console.log("updating student...");
+        log.info(`[StudentDb] Updating student with id ${id}: `, student);
         await invalidateStudentCache();
         return await collection.updateOne({ _id: new ObjectId(id) }, { $set: student });
     },
     delete: async (id: string) => {
-        console.log("deleting student...");
+        log.info(`[StudentDb] Deleting student with id: ${id}`);
         await invalidateStudentCache();
         return await collection.deleteOne({ _id: new ObjectId(id) });
     },

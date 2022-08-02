@@ -1,6 +1,7 @@
 import stateData from "./stateData.json";
 import db from "./index";
 import { State } from "../interfaces/state";
+import log from "../log";
 
 /**
  * Seed the database with state data.
@@ -8,9 +9,9 @@ import { State } from "../interfaces/state";
 const seedStateData = async () => {
     const stateCollection = db.collection<State>("states");
 
-    console.log("seeding state data...");
+    log.info("[Db] Seeding state data...");
     await stateCollection.insertMany(stateData);
-    console.log("state data seeded.");
+    log.info("[Db] State data seeded.");
 };
 
 /**
@@ -19,16 +20,16 @@ const seedStateData = async () => {
 const checkStateData = async () => {
     const stateCollection = db.collection<State>("states");
 
-    console.log("checking state data...");
+    log.info("[Db] Checking state data...");
     const states = await stateCollection.find().toArray();
     const stateCodes = states.map((state) => state.stateCode);
     const seedStateCodes = stateData.map((state) => state.stateCode);
     const missingStateCodes = seedStateCodes.filter((stateCode) => !stateCodes.includes(stateCode));
     if (missingStateCodes.length > 0) {
-        console.log("state data is missing:", missingStateCodes);
+        log.info("[Db] State data is missing: ", missingStateCodes);
         return false;
     }
-    console.log("state data is complete.");
+    log.info("[Db] State data is valid.");
     return true;
 };
 
@@ -38,18 +39,20 @@ const checkStateData = async () => {
 const ensureStateCodeIndex = async () => {
     const stateCollection = db.collection<State>("states");
 
-    console.log("ensuring state code index...");
+    log.info("[Db] Ensuring state code index...");
     await stateCollection.createIndex({ stateCode: 1 }, { unique: true });
-    console.log("state code index ensured.");
+    log.info("[Db] State code index ensured.");
 };
 
 /**
  * Run all seed operations by checking if data exists and then seeding if necessary, as well as adding any missing indexes.
  */
 export const runSeed = async () => {
+    log.info("[Db] Running seed...");
     const stateDataExists = await checkStateData();
     if (!stateDataExists) {
         await seedStateData();
     }
     await ensureStateCodeIndex();
+    log.info("[Db] Seed complete.");
 };

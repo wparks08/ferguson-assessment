@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import studentDb from "./studentDb";
 import { Student } from "../../interfaces/student";
 import { formatPhoneNumber, scrubPhoneNumber } from "./util";
+import log from "../../log";
 
 /**
  * Create a new student
@@ -20,6 +21,7 @@ import { formatPhoneNumber, scrubPhoneNumber } from "./util";
  * @param res
  */
 export const createStudent = async (req: Request, res: Response) => {
+    log.info("[StudentController] Creating student: ", req.body);
     try {
         const { firstName, lastName, stateOfResidenceCode, zip, phoneNumber } = req.body as Student;
         await studentDb.create({
@@ -29,9 +31,10 @@ export const createStudent = async (req: Request, res: Response) => {
             zip,
             phoneNumber: scrubPhoneNumber(phoneNumber.toString()),
         });
+        log.info("[StudentController] Created student: ", req.body);
         res.sendStatus(201);
     } catch (err) {
-        console.error(err);
+        log.error(`[StudentController] ${err}`);
         res.status(500).send({ error: "Student could not be created." });
     }
 };
@@ -60,16 +63,18 @@ interface FindStudentRequest extends Request {
  * @param res
  */
 export const listStudents = async (req: FindStudentRequest, res: Response) => {
+    log.info("[StudentController] Listing students. ", req.query);
     const { limit = "0", offset = "0", sortBy, order = "asc" } = req.query;
     try {
         const students = await studentDb.find({ limit: parseInt(limit), offset: parseInt(offset), sortBy, order });
+        log.info(`[StudentController] Responding with ${students?.length} students`);
         res.json(
             students.map((student) => {
                 return { ...student, phoneNumber: formatPhoneNumber(student.phoneNumber) };
             })
         );
     } catch (err) {
-        console.error(err);
+        log.error(`[StudentController] ${err}`);
         res.status(500).send({ error: "Students could not be retrieved." });
     }
 };
@@ -80,11 +85,13 @@ export const listStudents = async (req: FindStudentRequest, res: Response) => {
  * @param res
  */
 export const getStudent = async (req: Request, res: Response) => {
+    log.info(`[StudentController] Getting student with id: ${req.params.id}`);
     try {
         const student = await studentDb.get(req.params.id);
+        log.info(`[StudentController] Found student with id: ${req.params.id}`);
         res.json(student);
     } catch (err) {
-        console.error(err);
+        log.error(`[StudentController] ${err}`);
         res.status(500).send({ error: "Student could not be retrieved." });
     }
 };
@@ -95,11 +102,13 @@ export const getStudent = async (req: Request, res: Response) => {
  * @param res
  */
 export const updateStudent = async (req: Request, res: Response) => {
+    log.info(`[StudentController] Updating student with id ${req.params.id}: `, req.body);
     try {
         await studentDb.update(req.params.id, req.body);
+        log.info(`[StudentController] Updated student with id ${req.params.id}: `, req.body);
         res.sendStatus(200);
     } catch (err) {
-        console.error(err);
+        log.error(`[StudentController] ${err}`);
         res.status(500).send({ error: "Student could not be updated." });
     }
 };
@@ -110,11 +119,13 @@ export const updateStudent = async (req: Request, res: Response) => {
  * @param res
  */
 export const deleteStudent = async (req: Request, res: Response) => {
+    log.info(`[StudentController] Deleting student with id ${req.params.id}`);
     try {
         await studentDb.delete(req.params.id);
+        log.info(`[StudentController] Deleted student with id ${req.params.id}`);
         res.sendStatus(200);
     } catch (err) {
-        console.error(err);
+        log.error(`[StudentController] ${err}`);
         res.status(500).send({ error: "Student could not be deleted." });
     }
 };

@@ -1,6 +1,7 @@
 import server from "./server";
 import { dbClient } from "./db";
 import { DB_NAME } from "./db/config";
+import log from "./log";
 
 // Default port
 const defaultPort = 3001;
@@ -14,12 +15,12 @@ server.listen(PORT);
 process.on("SIGINT", async () => {
     // If node environment is not production, drop all database collections
     if (process.env.NODE_ENV !== "production") {
-        console.log("Dropping database...");
+        log.info(`[Shutdown] Dropping database: ${DB_NAME}`);
         await dbClient.db(DB_NAME).dropDatabase((error) => {
             if (error) {
-                console.error(error);
+                log.error(`[Shutdown] Error dropping database: ${error}`);
             } else {
-                console.log("Database dropped.");
+                log.info(`[Shutdown] Database dropped: ${DB_NAME}`);
             }
         });
     }
@@ -27,21 +28,21 @@ process.on("SIGINT", async () => {
     // Close the database connection
     try {
         await dbClient.close();
-        console.log("Database connection closed.");
+        log.info(`[Shutdown] Database connection closed: ${DB_NAME}`);
         process.exitCode = 0;
     } catch (e) {
-        console.error(e);
+        log.error(`[Shutdown] Error closing database connection: ${e}`);
         process.exitCode = 1;
     }
 
     // Close the server
-    console.log("Closing server...");
+    log.info("[Shutdown] Closing server");
     server.close((err) => {
         if (err) {
-            console.error(err);
+            log.error(`[Shutdown] Error closing server: ${err}`);
             process.exitCode = 1;
         } else {
-            console.log("Server closed");
+            log.info("[Shutdown] Server closed");
             process.exitCode = 0;
         }
     });
