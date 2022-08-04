@@ -6,7 +6,6 @@ import path from "path";
 import log from "../log";
 import { morganMiddleware } from "../log/morgan";
 
-log.info("[App] Starting server...");
 const app = express();
 
 log.info("[App] Configuring server...");
@@ -24,10 +23,10 @@ if (process.env.NODE_ENV === "production") {
 state.routes(app);
 status.routes(app);
 student.routes(app);
-log.info("[App] Configured routes.");
 
 app.all("*", (req, res) => {
     res.sendFile(path.join(__dirname, "../../client/build/index.html"));
 });
+log.info("[App] Configured routes.");
 
 export default app;

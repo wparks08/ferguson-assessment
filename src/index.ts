@@ -10,6 +10,7 @@ const defaultPort = 3001;
 const PORT = process.env.PORT || defaultPort;
 
 // Start the server
+log.info("Starting server...");
 server.listen(PORT);
 
 process.on("SIGINT", async () => {

@@ -26,7 +26,10 @@ export class StudentCollection {
         return this;
     }
 
-    sort({ sortBy, order }: { sortBy: keyof Student; order: "asc" | "desc" }) {
+    sort({ sortBy, order }: { sortBy?: keyof Student; order: "asc" | "desc" }) {
+        if (!sortBy) {
+            return this;
+        }
         this._students.sort((a, b) => {
             if (order === "asc") {
                 return a[sortBy] > b[sortBy] ? 1 : -1;

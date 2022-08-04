@@ -1,7 +1,7 @@
 import { Student } from "../../interfaces/student";
 import db from "../../db";
 import { ObjectId } from "mongodb";
-import { verifyAllStudents, getAllStudents, setAllStudents, invalidateStudentCache } from "../../cache";
+import { getAllStudents, invalidateStudentCache, setAllStudents, verifyAllStudents } from "../../cache";
 import { StudentCollection } from "../../classes/StudentCollection";
 import log from "../../log";
 
@@ -33,13 +33,7 @@ export default {
                 throw new Error("students not found in cache after verification succeeded");
             }
 
-            const students = new StudentCollection(cachedStudents).skip(offset).limit(limit);
-
-            if (sortBy) {
-                students.sort({ sortBy, order });
-            }
-
-            return students.toArray();
+            return new StudentCollection(cachedStudents).skip(offset).limit(limit).sort({ sortBy, order }).toArray();
         } else {
             log.info("[StudentDb] Students not found in cache, retrieving from database");
             const students = await collection
